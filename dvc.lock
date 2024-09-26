@@ -1,0 +1,535 @@
+schema: '2.0'
+stages:
+  download_data:
+    cmd: dvc get https://gitlab.com/italodellagarza/SBSITests/ data/ -o ./data/raw
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: 9bcbd57a4aaac67345345e8e955540c5.dir
+      size: 68539656
+      nfiles: 1464
+  prepare_data:
+    cmd: python aml_magic/src/stages/prepare_data.py
+    deps:
+    - path: aml_magic/src/consts.py
+      hash: md5
+      md5: 557fad337cb37bacfc1b81993bc615f6
+      size: 485
+    - path: aml_magic/src/stages/prepare_data.py
+      hash: md5
+      md5: ea250977a39588a623db0a3aa7d7e35b
+      size: 2955
+    - path: aml_magic/src/utils/configs.py
+      hash: md5
+      md5: 047c1a423c4aa2d3b7aa4438f62ac10c
+      size: 6722
+    - path: data/raw
+      hash: md5
+      md5: 9bcbd57a4aaac67345345e8e955540c5.dir
+      size: 68539656
+      nfiles: 1464
+    params:
+      stage_params/prepare_data.yaml:
+        params:
+          data_path: data/raw/
+          output_path: data/processed/
+          train_percentage: 0.8
+          default_training_config:
+            max_epochs: 100
+            batch_size: 4
+            n_repeats: 10
+            accelerator: cpu
+            use_swa: false
+            swa_lrs: 0.01
+          datasets:
+            amlsim_31:
+              name: amlsim_31
+              data_config:
+                output_filename: magic_lgbm_smlsim_31
+                run_name: amlsim31_check
+                experiment_name: magic_lgbm_smlsim_31
+            amlsim_51:
+              name: amlsim_51
+              data_config:
+                output_filename: magic_lgbm_smlsim_51
+                run_name: amlsim51_check
+                experiment_name: magic_lgbm_smlsim_51
+            amlsim_101:
+              name: amlsim_101
+              data_config:
+                output_filename: magic_lgbm_smlsim_101
+                run_name: amlsim101_check
+                experiment_name: magic_lgbm_smlsim_101
+            amlsim_201:
+              name: amlsim_201
+              data_config:
+                output_filename: magic_lgbm_smlsim_201
+                run_name: amlsim201_check
+                experiment_name: magic_lgbm_smlsim_201
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 4518e13798239154c38d28397011b849.dir
+      size: 5916020
+      nfiles: 8
+  gnn_training:
+    cmd: python aml_magic/src/stages/train_gnn.py
+    deps:
+    - path: aml_magic/src/consts.py
+      hash: md5
+      md5: 9bfc705fa9b34dd53e9cbe0c008c8c7b
+      size: 158
+    - path: aml_magic/src/stages/train_gnn.py
+      hash: md5
+      md5: dcb2666cf30fd890f6829e69e5048624
+      size: 2781
+    - path: aml_magic/src/utils/configs.py
+      hash: md5
+      md5: 9a9320705d4c3edf6e071d0c1af9bb52
+      size: 4786
+    - path: data/processed
+      hash: md5
+      md5: b65e7a5e1b2bd50c7b2f4031ab38b15c.dir
+      size: 773588
+      nfiles: 2
+    params:
+      params/gnn_training.yaml:
+        params:
+          model_architectures:
+            default:
+              dim_input: 6
+              dim_edge: 8
+              conv_sizes:
+              - 8
+              - 8
+              - 8
+              linkpred_sizes:
+              - 8
+              embed_reduction_mode: mean
+              eps: 1.0
+              n_cls: 2
+              lr: 0.005
+              batch_norm: true
+              weight:
+              aggr: add
+              gin_inner_layers: 1
+            dataset_configs:
+              amlsim_31:
+                dim_input: 6
+                dim_edge: 8
+                conv_sizes:
+                - 16
+                - 16
+                - 16
+                linkpred_sizes:
+                - 16
+                - 16
+                embed_reduction_mode: concat
+                eps: 1.0
+                n_cls: 2
+                lr: 0.005
+                batch_norm: true
+                weight:
+                aggr: softmax
+                aggr_kwargs:
+                  t: 0.8
+                gin_inner_layers: 2
+              amlsim_51:
+                dim_input: 6
+                dim_edge: 8
+                conv_sizes:
+                - 8
+                - 8
+                - 8
+                linkpred_sizes:
+                - 8
+                - 8
+                embed_reduction_mode: concat
+                eps: 1.0
+                n_cls: 2
+                lr: 0.005
+                batch_norm: true
+                weight:
+                aggr:
+                - add
+                - min
+                - max
+                gin_inner_layers: 2
+              amlsim_101:
+                dim_input: 6
+                dim_edge: 8
+                conv_sizes:
+                - 16
+                - 16
+                - 16
+                linkpred_sizes:
+                - 32
+                - 16
+                - 8
+                embed_reduction_mode: mean
+                eps: 1.0
+                n_cls: 2
+                lr: 0.005
+                batch_norm: true
+                weight:
+                aggr:
+                - add
+                - max
+                - min
+                gin_inner_layers: 1
+              amlsim_201:
+                dim_input: 6
+                dim_edge: 8
+                conv_sizes:
+                - 16
+                - 16
+                - 16
+                linkpred_sizes:
+                - 16
+                - 8
+                embed_reduction_mode: concat
+                eps: 1.0
+                n_cls: 2
+                lr: 0.005
+                batch_norm: true
+                weight:
+                aggr:
+                - add
+                - min
+                - max
+                gin_inner_layers: 1
+          training_configs:
+            default:
+              max_epochs: 100
+              batch_size: 4
+              n_repeats: 10
+              accelerator: cpu
+              use_swa: false
+              swa_lrs: 0.01
+            dataset_training_configs:
+              amlsim_31:
+                max_epochs: 100
+                batch_size: 10
+                n_repeats: 10
+                accelerator: cpu
+                use_swa: true
+                swa_lrs: 0.05
+              amlsim_51:
+                max_epochs: 100
+                batch_size: 4
+                n_repeats: 10
+                accelerator: cpu
+                use_swa: true
+                swa_lrs: 0.05
+              amlsim_101:
+                max_epochs: 100
+                batch_size: 4
+                n_repeats: 10
+                accelerator: cpu
+                use_swa: true
+                swa_lrs: 0.05
+              amlsim_201:
+                max_epochs: 100
+                batch_size: 4
+                n_repeats: 10
+                accelerator: cpu
+                use_swa: true
+                swa_lrs: 0.05
+      params/prepare_data.yaml:
+        params.output_path: data/processed/
+  train_and_test_models:
+    cmd: python aml_magic/src/stages/train_and_test_models.py
+    deps:
+    - path: aml_magic/src/consts.py
+      hash: md5
+      md5: 557fad337cb37bacfc1b81993bc615f6
+      size: 485
+    - path: aml_magic/src/models/metrics.py
+      hash: md5
+      md5: 620b469f41369b05374b2342b5444390
+      size: 6588
+    - path: aml_magic/src/models/training.py
+      hash: md5
+      md5: 5e6a0aafea8a6e7ddefe7bac06608d83
+      size: 8383
+    - path: aml_magic/src/stages/train_and_test_models.py
+      hash: md5
+      md5: 2d6139b254bb73716663aa74b3f675e7
+      size: 6351
+    - path: aml_magic/src/utils/configs.py
+      hash: md5
+      md5: 047c1a423c4aa2d3b7aa4438f62ac10c
+      size: 6722
+    - path: data/processed
+      hash: md5
+      md5: 4518e13798239154c38d28397011b849.dir
+      size: 5916020
+      nfiles: 8
+    params:
+      params.yaml:
+        datasets_to_train:
+        - amlsim_31
+        - amlsim_51
+        - amlsim_101
+        - amlsim_201
+        gradient_boosting_impl: xgboost
+        n_repeats: 10
+      stage_params/gb_training.yaml:
+        params:
+          xgboost:
+            default:
+              random_state: 42
+              objective: binary:logistic
+              n_estimators: 250
+              n_jobs: -1
+              learning_rate: 0.05
+            dataset_configs:
+              amlsim_201:
+                random_state: 42
+                objective: binary:logistic
+                n_estimators: 500
+                n_jobs: -1
+                learning_rate: 0.05
+                scale_pos_weight: 4.0
+          lightgbm:
+            default:
+              random_state: 42
+              num_leaves: 256
+              learning_rate: 0.05
+              n_estimators: 250
+              n_jobs: -1
+              boosting_type: gbdt
+            dataset_configs:
+              amlsim_31:
+                random_state: 111
+                num_leaves: 222
+                learning_rate: 0.031
+                n_estimators: 677
+                is_unbalance: false
+                subsample: 0.264
+                colsample_bytree: 0.117
+                n_jobs: -1
+                min_data_in_leaf: 11
+                boosting_type: gbdt
+                class_weight:
+                  0: 0.746
+                  1: 0.254
+              amlsim_51:
+                random_state: 111
+                num_leaves: 107
+                learning_rate: 0.08
+                n_estimators: 671
+                n_jobs: -1
+                boosting_type: dart
+                is_unbalance: false
+              amlsim_201:
+                random_state: 42
+                num_leaves: 256
+                learning_rate: 0.05
+                n_estimators: 250
+                n_jobs: -1
+                boosting_type: gbdt
+                class_weight:
+                  0: 0.2
+                  1: 0.8
+      stage_params/gnn_training.yaml:
+        params:
+          model_architectures:
+            default:
+              dim_input: 6
+              dim_edge: 8
+              conv_sizes:
+              - 8
+              - 8
+              - 8
+              linkpred_sizes:
+              - 8
+              embed_reduction_mode: mean
+              eps: 1.0
+              n_cls: 2
+              lr: 0.005
+              batch_norm: true
+              weight:
+              aggr:
+              - add
+              - mean
+              gin_inner_layers: 1
+            dataset_configs:
+              amlsim_31:
+                dim_input: 6
+                dim_edge: 8
+                conv_sizes:
+                - 8
+                - 8
+                linkpred_sizes:
+                - 32
+                embed_reduction_mode: mean
+                eps: 1.0
+                n_cls: 2
+                lr: 0.005
+                batch_norm: true
+                weight:
+                aggr:
+                - add
+                - mean
+                gin_inner_layers: 1
+              amlsim_51:
+                dim_input: 6
+                dim_edge: 8
+                conv_sizes:
+                - 16
+                - 16
+                linkpred_sizes:
+                - 32
+                - 16
+                embed_reduction_mode: concat
+                eps: 1.0
+                n_cls: 2
+                lr: 0.005
+                batch_norm: true
+                weight:
+                aggr:
+                - add
+                - mean
+                gin_inner_layers: 1
+              amlsim_101:
+                dim_input: 6
+                dim_edge: 8
+                conv_sizes:
+                - 16
+                - 16
+                linkpred_sizes:
+                - 8
+                embed_reduction_mode: concat
+                eps: 1.0
+                n_cls: 2
+                lr: 0.005
+                batch_norm: true
+                weight:
+                aggr:
+                - add
+                - min
+                - max
+                gin_inner_layers: 1
+              amlsim_201:
+                dim_input: 6
+                dim_edge: 8
+                conv_sizes:
+                - 32
+                - 8
+                linkpred_sizes:
+                - 32
+                embed_reduction_mode: concat
+                eps: 1.0
+                n_cls: 2
+                lr: 0.005
+                batch_norm: true
+                weight:
+                - 0.2
+                - 0.8
+                aggr:
+                - add
+                - mean
+                gin_inner_layers: 1
+          training_configs:
+            default:
+              max_epochs: 100
+              batch_size: 128
+              accelerator: cpu
+              use_swa: false
+              swa_lrs: 0.01
+            dataset_training_configs:
+              amlsim_31:
+                max_epochs: 100
+                batch_size: 16
+                accelerator: cpu
+                use_swa: true
+                swa_lrs: 0.05
+              amlsim_51:
+                max_epochs: 100
+                batch_size: 8
+                accelerator: cpu
+                use_swa: true
+                swa_lrs: 0.05
+              amlsim_101:
+                max_epochs: 100
+                batch_size: 64
+                accelerator: cpu
+                use_swa: true
+                swa_lrs: 0.05
+              amlsim_201:
+                max_epochs: 100
+                batch_size: 8
+                accelerator: cpu
+                use_swa: true
+                swa_lrs: 0.05
+      stage_params/prepare_data.yaml:
+        params.output_path: data/processed/
+    outs:
+    - path: data/results/study
+      hash: md5
+      md5: 1c77dd248e5bb5ba0d13306f395c3dfc.dir
+      size: 6969
+      nfiles: 8
+  download_SBSITests_results:
+    cmd: dvc get https://gitlab.com/italodellagarza/SBSITests/ results -o ./data/results/prev_paper
+    outs:
+    - path: data/results/prev_paper
+      hash: md5
+      md5: e83c34a89219daeca4fd6792f5f6670b.dir
+      size: 8102
+      nfiles: 24
+  summarize_results:
+    cmd: python aml_magic/src/stages/summarize_results.py
+    deps:
+    - path: aml_magic/src/stages/summarize_results.py
+      hash: md5
+      md5: 09141e8912b274fc7c0b5462f5157a1f
+      size: 15384
+    - path: data/results/prev_paper
+      hash: md5
+      md5: e83c34a89219daeca4fd6792f5f6670b.dir
+      size: 8102
+      nfiles: 24
+    - path: data/results/study
+      hash: md5
+      md5: 1c77dd248e5bb5ba0d13306f395c3dfc.dir
+      size: 6969
+      nfiles: 8
+    outs:
+    - path: data/results/comparison
+      hash: md5
+      md5: c777a61499c1a07a7a958cd3bca78698.dir
+      size: 121905
+      nfiles: 12
+  hp_tune:
+    cmd: python aml_magic/src/stages/hp_tune.py
+    deps:
+    - path: aml_magic/src/stages/hp_tune.py
+      hash: md5
+      md5: 0dab959d4bd70a57e420814b299c20c2
+      size: 6692
+    - path: data/raw
+      hash: md5
+      md5: 9bcbd57a4aaac67345345e8e955540c5.dir
+      size: 68539656
+      nfiles: 1464
+    params:
+      stage_params/hp_tune.yaml:
+        params:
+          n_trials: 50
+          max_epochs: 25
+          batch_size: 64
+          hp_out_path:
+          tuning_out_path: data/hp_results/
+          tuning_datasets:
+          - amlsim_31
+          - amlsim_51
+          - amlsim_101
+          - amlsim_201
+    outs:
+    - path: data/hp_results
+      hash: md5
+      md5: 86d978bd29c0a7df16a4a49b7484a232.dir
+      size: 87804
+      nfiles: 4

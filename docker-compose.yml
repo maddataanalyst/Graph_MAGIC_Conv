@@ -1,0 +1,19 @@
+services:
+  graph_magic_conv:
+    image: continuumio/miniconda3:24.11.1-0
+    container_name: graph_magic_conv_container
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: >
+      bash -c "
+      conda init bash && \
+      . ~/.bashrc && \
+      if [ ! -d /opt/conda/envs/aml_magic ]; then
+        conda env create -f env.yml;
+      fi && \
+      conda init bash && \
+      conda activate aml_magic && \
+      dvc repro summarize_results --force
+      "
+    tty: true

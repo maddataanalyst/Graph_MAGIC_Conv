@@ -1,0 +1,11 @@
+params:
+  n_trials: 50
+  max_epochs: 25
+  batch_size: 64
+  hp_out_path:
+  tuning_out_path: data/hp_results/
+  tuning_datasets:
+    - amlsim_31
+    - amlsim_51
+    - amlsim_101
+    - amlsim_201

@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Wójcik"
+    given-names: "Filip"
+title: "Money Laundering Detection with Multi-Aggregation Custom Edge GIN"
+journal: "Journal of Data Science"
+version: 1.0.0
+date-released: 2025
+pages: "1-19"
+doi: "10.6339/25-JDS1190"
+issn: "1680-743X"
+publisher: "School of Statistics, Renmin University of China"
