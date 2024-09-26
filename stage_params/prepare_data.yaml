@@ -1,0 +1,36 @@
+params:
+  data_path: data/raw/
+  output_path: data/processed/
+  train_percentage: 0.8
+  default_training_config: #TODO: move this to gnn_training config file
+    max_epochs: 100
+    batch_size: 4
+    n_repeats: 10
+    accelerator: cpu
+    use_swa: false
+    swa_lrs: 0.01
+  datasets:
+    amlsim_31:
+      name: amlsim_31
+      data_config:
+        output_filename: magic_lgbm_smlsim_31
+        run_name: amlsim31_check
+        experiment_name: magic_lgbm_smlsim_31
+    amlsim_51:
+      name: amlsim_51
+      data_config:
+        output_filename: magic_lgbm_smlsim_51
+        run_name: amlsim51_check
+        experiment_name: magic_lgbm_smlsim_51
+    amlsim_101:
+      name: amlsim_101
+      data_config:
+        output_filename: magic_lgbm_smlsim_101
+        run_name: amlsim101_check
+        experiment_name: magic_lgbm_smlsim_101
+    amlsim_201:
+      name: amlsim_201
+      data_config:
+        output_filename: magic_lgbm_smlsim_201
+        run_name: amlsim201_check
+        experiment_name: magic_lgbm_smlsim_201
