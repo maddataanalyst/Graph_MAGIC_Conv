@@ -1,0 +1,138 @@
+params:
+    model_architectures:
+      default:
+        dim_input: 6
+        dim_edge: 8
+        conv_sizes:
+          - 8
+          - 8
+          - 8
+        linkpred_sizes:
+          - 8
+        embed_reduction_mode: mean
+        eps: 1.0
+        n_cls: 2
+        lr: 0.005
+        batch_norm: true
+        weight: null
+        aggr: add
+        gin_inner_layers: 1
+      dataset_configs:
+        amlsim_31:
+          dim_input: 6
+          dim_edge: 8
+          conv_sizes:
+            - 16
+            - 16
+            - 16
+          linkpred_sizes:
+            - 16
+            - 16
+          embed_reduction_mode: concat
+          eps: 1.0
+          n_cls: 2
+          lr: 0.005
+          batch_norm: true
+          weight: null
+          aggr: softmax
+          aggr_kwargs:
+            t: 0.8
+          gin_inner_layers: 2
+        amlsim_51:
+          dim_input: 6
+          dim_edge: 8
+          conv_sizes:
+            - 8
+            - 8
+            - 8
+          linkpred_sizes:
+            - 8
+            - 8
+          embed_reduction_mode: concat
+          eps: 1.0
+          n_cls: 2
+          lr: 0.005
+          batch_norm: true
+          weight: null
+          aggr:
+            - add
+            - min
+            - max
+          gin_inner_layers: 2
+        amlsim_101:
+          dim_input: 6
+          dim_edge: 8
+          conv_sizes:
+            - 16
+            - 16
+            - 16
+          linkpred_sizes:
+            - 32
+            - 16
+            - 8
+          embed_reduction_mode: mean
+          eps: 1.0
+          n_cls: 2
+          lr: 0.005
+          batch_norm: true
+          weight: null
+          aggr:
+            - add
+            - max
+            - min
+          gin_inner_layers: 1
+        amlsim_201:
+          dim_input: 6
+          dim_edge: 8
+          conv_sizes:
+            - 16
+            - 16
+            - 16
+          linkpred_sizes:
+            - 16
+            - 8
+          embed_reduction_mode: concat
+          eps: 1.0
+          n_cls: 2
+          lr: 0.005
+          batch_norm: true
+          weight:
+            - 0.2
+            - 0.8
+          aggr:
+            - add
+            - min
+            - max
+          gin_inner_layers: 1
+    training_configs:
+      default:
+          max_epochs: 100
+          batch_size: 4
+          accelerator: cpu
+          use_swa: false
+          swa_lrs: 0.01
+      dataset_training_configs:
+        amlsim_31:
+          max_epochs: 100
+          batch_size: 10
+          accelerator: cpu
+          use_swa: true
+          swa_lrs: 0.05
+        amlsim_51:
+          max_epochs: 100
+          batch_size: 4
+          accelerator: cpu
+          use_swa: true
+          swa_lrs: 0.05
+        amlsim_101:
+          max_epochs: 100
+          batch_size: 4
+          accelerator: cpu
+          use_swa: true
+          swa_lrs: 0.05
+        amlsim_201:
+          max_epochs: 100
+          batch_size: 4
+          accelerator: cpu
+          use_swa: true
+          swa_lrs: 0.05

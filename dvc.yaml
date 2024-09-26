@@ -1,0 +1,51 @@
+stages:
+  download_data:
+    cmd: dvc get https://github.com/italodellagarza/SBSITests/ data/ -o ./data/raw
+    outs:
+    - data/raw
+  download_SBSITests_results:
+    cmd: dvc get https://github.com/italodellagarza/SBSITests/ results -o ./data/results/prev_paper
+    outs:
+    - data/results/prev_paper
+  prepare_data:
+    cmd: python aml_magic/src/stages/prepare_data.py
+    deps:
+    - data/raw
+    - aml_magic/src/stages/prepare_data.py
+    - aml_magic/src/utils/configs.py
+    - aml_magic/src/consts.py
+    params:
+    - stage_params/prepare_data.yaml:
+      - params
+    outs:
+    - data/processed
+  train_and_test_models:
+    cmd: python aml_magic/src/stages/train_and_test_models.py
+    deps:
+    - data/processed
+    - aml_magic/src/stages/train_and_test_models.py
+    - aml_magic/src/utils/configs.py
+    - aml_magic/src/consts.py
+    - aml_magic/src/models/training.py
+    - aml_magic/src/models/metrics.py
+    params:
+    - params.yaml:
+      - datasets_to_train
+      - gradient_boosting_impl
+      - n_repeats
+    - stage_params/gnn_training.yaml:
+      - params
+    - stage_params/gb_training.yaml:
+      - params
+    - stage_params/prepare_data.yaml:
+      - params.output_path
+    outs:
+    - data/results/study
+  summarize_results:
+    cmd: python aml_magic/src/stages/summarize_results.py
+    deps:
+      - data/results/study
+      - data/results/prev_paper
+      - aml_magic/src/stages/summarize_results.py
+    outs:
+      - data/results/comparison

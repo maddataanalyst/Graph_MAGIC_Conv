@@ -1,0 +1,7 @@
+datasets_to_train:
+  - amlsim_31
+  - amlsim_51
+  - amlsim_101
+  - amlsim_201
+gradient_boosting_impl: xgboost
+n_repeats: 10
