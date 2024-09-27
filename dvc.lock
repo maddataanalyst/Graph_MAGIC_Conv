@@ -1,7 +1,7 @@
 schema: '2.0'
 stages:
   download_data:
-    cmd: dvc get https://github.com/italodellagarza/SBSITests/ data/ -o ./data/raw
+    cmd: dvc get https://gitlab.com/italodellagarza/SBSITests/ data/ -o ./data/raw
     outs:
     - path: data/raw
       hash: md5
@@ -69,7 +69,7 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: 94862047fb8dab694e5a654ce6ad239b.dir
+      md5: 074d54e1022ba1f6f10aeac7bedf5ba1.dir
       size: 5916020
       nfiles: 8
   gnn_training:
@@ -246,12 +246,12 @@ stages:
       size: 459
     - path: aml_magic/src/models/metrics.py
       hash: md5
-      md5: 6a33f071e9483b84f7ca32eff06a18b3
-      size: 6482
+      md5: 56643d237030c3f968052c0b955e1b81
+      size: 6567
     - path: aml_magic/src/models/training.py
       hash: md5
-      md5: aca7f59091e0709fafd8f8ad6c796deb
-      size: 7315
+      md5: 861b15be6260211b1d7fda5598a96f7c
+      size: 7400
     - path: aml_magic/src/stages/train_and_test_models.py
       hash: md5
       md5: a38347b4114a546f245f03e0248f83af
@@ -262,7 +262,7 @@ stages:
       size: 6667
     - path: data/processed
       hash: md5
-      md5: 94862047fb8dab694e5a654ce6ad239b.dir
+      md5: 074d54e1022ba1f6f10aeac7bedf5ba1.dir
       size: 5916020
       nfiles: 8
     params:
@@ -480,7 +480,7 @@ stages:
       size: 6972
       nfiles: 8
   download_SBSITests_results:
-    cmd: dvc get https://github.com/italodellagarza/SBSITests/ results -o ./data/results/prev_paper
+    cmd: dvc get https://gitlab.com/italodellagarza/SBSITests/ results -o ./data/results/prev_paper
     outs:
     - path: data/results/prev_paper
       hash: md5
@@ -507,6 +507,6 @@ stages:
     outs:
     - path: data/results/comparison
       hash: md5
-      md5: bf1625c031733d927ab522883ca752d7.dir
+      md5: 9ea6e8440d59de1a4a9a09dfea819892.dir
       size: 123099
       nfiles: 12

@@ -1,10 +1,10 @@
 stages:
   download_data:
-    cmd: dvc get https://github.com/italodellagarza/SBSITests/ data/ -o ./data/raw
+    cmd: dvc get https://gitlab.com/italodellagarza/SBSITests/ data/ -o ./data/raw
     outs:
     - data/raw
   download_SBSITests_results:
-    cmd: dvc get https://github.com/italodellagarza/SBSITests/ results -o ./data/results/prev_paper
+    cmd: dvc get https://gitlab.com/italodellagarza/SBSITests/ results -o ./data/results/prev_paper
     outs:
     - data/results/prev_paper
   prepare_data:

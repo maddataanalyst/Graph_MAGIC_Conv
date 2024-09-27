@@ -100,7 +100,7 @@ def save_results_summary(
     raw_scores = pd.DataFrame(metric_scores).assign(model=model_name)
     results = calculate_results_ci(metric_scores, model_name, n_repeats)
     mlf.set_experiment(experiment_name=experiment_name)
-    with mlf.start_run(run_name="CI_SUMMARY") as run:
+    with mlf.start_run(run_name="CI SUMMARY ") as run:
         for metric, values in results.items():
             if metric != "model":
                 mlf.log_metric(metric, values["score"])

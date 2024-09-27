@@ -16,7 +16,7 @@ A persistent challenge in Anti-Money Laundering research is the scarcity of stan
 
 > Silva, Í. D. G., Correia, L. H. A., & Maziero, E. G. (2023, May). Graph Neural Networks Applied to Money Laundering Detection in Intelligent Information Systems. In Proceedings of the XIX Brazilian Symposium on Information Systems (pp. 252-259).
 
-The authors of this study developed a set of highly imbalanced synthetic datasets that simulate real-world transactions. The proposed model was tested using these datasets. The original implementation is accessible via the GitHub repository.
+The authors of this study developed a set of highly imbalanced synthetic datasets that simulate real-world transactions. The proposed model was tested using these datasets. The original implementation is accessible via the [the official GitLab repository](https://gitlab.com/italodellagarza/SBSITests).
 
 This project employs the same datasets, train/test splits, and evaluation metrics to ensure the comparability of results and to rigorously evaluate the newly proposed model.
 

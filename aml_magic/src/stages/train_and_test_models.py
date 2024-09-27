@@ -59,7 +59,7 @@ def train_and_test_repeat(
     gnn_model = training.train_aml_magic(
         repeat,
         experiment_name,
-        f"GNN_{repeat}",
+        f"{experiment_name}_GNN_cv{repeat}",
         model_arch_cfg,
         test_loader,
         train_loader,
@@ -71,7 +71,7 @@ def train_and_test_repeat(
     gb_results = training.train_gb(
         datas_for_gb=data_for_gb,
         experiment_name=experiment_name,
-        run_name=f"{experiment_config.gradient_boosting_impl}_{repeat}",
+        run_name=f"{experiment_name}_{experiment_config.gradient_boosting_impl}_cv{repeat}",
         config_for_gb=gb_train_cfg,
     )
 
@@ -109,7 +109,7 @@ def process_dataset(
         Gradient boosting configuration.
     """
     # Configure the experiment for the dataset
-    experiment_name = f"experiment_{ds}"
+    experiment_name = f"{ds}_crossval"
 
     dataset_path = Path(data_configs.output_path, ds)
     training_dataset = joblib.load(dataset_path / "train_graphs.pkl")
@@ -159,7 +159,7 @@ def process_dataset(
 
     metrics.save_results_summary(
         metric_scores,
-        ds,
+        f"{ds}_CI_SUMMARY",
         f"MAGIC+{experiment_config.gradient_boosting_impl}",
         experiment_config.n_repeats,
         results_path,
