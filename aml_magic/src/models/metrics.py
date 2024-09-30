@@ -80,6 +80,7 @@ def save_results_summary(
     model_name: str,
     n_repeats,
     output_path: Path,
+    mlflow_tracking_uri: str,
 ):
     """Saves metric summaries to a file and logs them to MLFlow.
 
@@ -96,9 +97,11 @@ def save_results_summary(
         Number of experimental repeats.
     output_path : Path
         Path to the output directory.
+    mlflow_tracking_uri: str
     """
     raw_scores = pd.DataFrame(metric_scores).assign(model=model_name)
     results = calculate_results_ci(metric_scores, model_name, n_repeats)
+    mlf.set_tracking_uri(mlflow_tracking_uri)
     mlf.set_experiment(experiment_name=experiment_name)
     with mlf.start_run(run_name="CI SUMMARY ") as run:
         for metric, values in results.items():

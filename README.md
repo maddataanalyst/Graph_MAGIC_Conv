@@ -81,7 +81,20 @@ This will perform the following steps:
 5. Save the results to the MLFlow tracking server.
 6. Generate a summary of the results and LaTeX tables.
 
-## Visualize results
+## Check results
+
+### In result files
+
+**Only after you run the DVC pipeline**, you can check the reuslts directly in the result files.
+
+1. Directory `results/study/` contains a separate folder for each dataset (e.g. `amlsim_31_CI_SUMMARY`) with two files inside:
+   1. `DATASET_NAME_xgboost_raw.csv` - raw scores for each fold and metric for the XGBoost link predictor;
+   2. `DATASET_NAME_xgboost.csv` - aggregates summary scores (mean, +/- std. deviation) for each metric after full cross-validation.
+2. Directory `results/comparison/' contains the following files and folders:
+   1. `scores_summary.csv` and `scores_summary.xlsx` - a comparison of the aggregated results for each model (including those from previous study) and metric. **Data from this file was used to report results in paper**.
+   2. `DATASET_NAME_scores.tex` - LaTeX tables with aggregated results for each dataset and metric. **Code for this tables was used in the paper**.
+   3. `figures/` - a folder with detailed comparison boxplots for each dataset, each metric and models (including those from previous study).
+
 
 ### In jupyter notebook
 

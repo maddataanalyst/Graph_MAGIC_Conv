@@ -5,3 +5,4 @@ datasets_to_train:
   - amlsim_201
 gradient_boosting_impl: xgboost
 n_repeats: 10
+mlflow_tracking_uri: "file:./mlruns"

@@ -64,6 +64,7 @@ def train_and_test_repeat(
         test_loader,
         train_loader,
         model_train_cfg,
+        experiment_config.mlflow_tracking_uri,
     )
     data_for_gb = training.prepare_embedding_for_gradient_boosting(
         gnn_model, training_dataset, test_dataset
@@ -73,6 +74,7 @@ def train_and_test_repeat(
         experiment_name=experiment_name,
         run_name=f"{experiment_name}_{experiment_config.gradient_boosting_impl}_cv{repeat}",
         config_for_gb=gb_train_cfg,
+        mlflow_tracking_uri=experiment_config.mlflow_tracking_uri,
     )
 
     return {
@@ -163,6 +165,7 @@ def process_dataset(
         f"MAGIC+{experiment_config.gradient_boosting_impl}",
         experiment_config.n_repeats,
         results_path,
+        experiment_config.mlflow_tracking_uri,
     )
 
 

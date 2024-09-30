@@ -232,3 +232,4 @@ class ExperimentConfig(BaseModel):
     datasets_to_train: List[str]
     gradient_boosting_impl: Literal["xgboost", "lightgbm"]
     n_repeats: int
+    mlflow_tracking_uri: str

@@ -4,6 +4,7 @@ data/
 # Mlflow and logs
 mlruns/
 lightning_logs/
+tb_logs/
 
 # Mac OS-specific storage files
 .DS_Store

@@ -34,7 +34,7 @@ def _dataset_sort_key(ds_name: str) -> int:
     int
         Numerical part of the dataset name.
     """
-    return int(ds_name.split(" ")[-1])
+    return int(ds_name.split(" ")[1])
 
 
 @dataclass
@@ -152,6 +152,7 @@ def gather_current_study_scores_and_summary(
     new_model_scores_summary = []
     new_model_raw_scores = []
     for ds in os.listdir(study_scores_path):
+        ds_clean_name = ds.replace("_CI_SUMMARY", "")
         for f in os.listdir(study_scores_path / ds):
             if f.endswith(".csv") and "raw" not in f:
                 scores = pd.read_csv(study_scores_path / ds / f).rename(
@@ -173,12 +174,12 @@ def gather_current_study_scores_and_summary(
                         }
                     )
                     .reset_index(names="metric")
-                    .assign(model=scores.model.unique()[0], dataset=ds)
+                    .assign(model=scores.model.unique()[0], dataset=ds_clean_name)
                 )
                 new_model_scores_summary.append(scores_standardized)
             elif f.endswith("raw.csv"):
                 raw_scores = pd.read_csv(study_scores_path / ds / f, index_col=0)
-                raw_scores["dataset"] = ds
+                raw_scores["dataset"] = ds_clean_name
                 new_model_raw_scores.append(raw_scores)
     scores_summary = pd.concat(new_model_scores_summary)
     raw_scores = pd.concat(new_model_raw_scores)

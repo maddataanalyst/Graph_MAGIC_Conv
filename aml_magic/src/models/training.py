@@ -45,6 +45,7 @@ def train_aml_magic(
     test_loader: pyg.data.DataLoader,
     train_loader: pyg.data.DataLoader,
     training_config: cfg.DatasetTrainConfig,
+    mlflow_tracking_uri: str,
 ) -> pl.LightningModule:
     """Training AML MAGIC model.
 
@@ -64,6 +65,7 @@ def train_aml_magic(
         Train data loader
     training_config : cfg.DatasetTrainConfig
         Training configuration.
+    mlflow_tracking_uri: str
 
     Returns
     -------
@@ -76,11 +78,11 @@ def train_aml_magic(
     lit_model = MAGICPl(**model_config.model_dump())
     loggers = [
         pl.loggers.MLFlowLogger(
-            tracking_uri="file:./mlruns",
+            tracking_uri=mlflow_tracking_uri,
             experiment_name=experiment_name,
-            run_name=f"{run_name}_execution_{execution}",
+            run_name=f"{run_name}",
         ),
-        pl.loggers.TensorBoardLogger(save_dir="./"),
+        pl.loggers.TensorBoardLogger(save_dir="./tb_logs", name=experiment_name),
     ]
     early_stop = pl.callbacks.early_stopping.EarlyStopping(
         monitor="train_f1", patience=10, mode="max"
@@ -164,6 +166,7 @@ def train_gb(
     experiment_name: str,
     run_name: str,
     config_for_gb: cfg.XGBoostConfig | cfg.LightGBMConfig,
+    mlflow_tracking_uri: str,
 ) -> GBTrainingResults:
     """A generic function for training the Gradient Boosting model - either the
     XGBoost or LightGBM.
@@ -178,12 +181,14 @@ def train_gb(
         Name of the run.
     config_for_gb : cfg.XGBoostConfig | cfg.LightGBMConfig
         A config for either XGBoost or LightGBM.
+    mlflow_tracking_uri: str
 
     Returns
     -------
     GBTrainingResults
         Training results for the Gradient Boosting model.
     """
+    mlf.set_tracking_uri(mlflow_tracking_uri)
     mlf.set_experiment(experiment_name=experiment_name)
     with mlf.start_run(run_name=run_name) as run:
         mlf.lightgbm.autolog(log_models=False, log_datasets=False)

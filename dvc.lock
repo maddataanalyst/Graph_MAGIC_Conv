@@ -21,8 +21,8 @@ stages:
       size: 2836
     - path: aml_magic/src/utils/configs.py
       hash: md5
-      md5: 46203e218433e63eb62e775e50877bc6
-      size: 6667
+      md5: 8ef643378683aa3985fdae237c18f0ad
+      size: 6696
     - path: data/raw
       hash: md5
       md5: 9bcbd57a4aaac67345345e8e955540c5.dir
@@ -69,8 +69,8 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: 074d54e1022ba1f6f10aeac7bedf5ba1.dir
-      size: 5916020
+      md5: a176490d457e1ff4c5d054536f93e4c5.dir
+      size: 5927732
       nfiles: 8
   gnn_training:
     cmd: python aml_magic/src/stages/train_gnn.py
@@ -246,24 +246,24 @@ stages:
       size: 459
     - path: aml_magic/src/models/metrics.py
       hash: md5
-      md5: 56643d237030c3f968052c0b955e1b81
-      size: 6567
+      md5: 620b469f41369b05374b2342b5444390
+      size: 6588
     - path: aml_magic/src/models/training.py
       hash: md5
-      md5: 861b15be6260211b1d7fda5598a96f7c
-      size: 7400
+      md5: 3b35f3b061e55ac2b6b4772fb7219635
+      size: 7490
     - path: aml_magic/src/stages/train_and_test_models.py
       hash: md5
-      md5: a38347b4114a546f245f03e0248f83af
-      size: 6136
+      md5: 2d6139b254bb73716663aa74b3f675e7
+      size: 6351
     - path: aml_magic/src/utils/configs.py
       hash: md5
-      md5: 46203e218433e63eb62e775e50877bc6
-      size: 6667
+      md5: 8ef643378683aa3985fdae237c18f0ad
+      size: 6696
     - path: data/processed
       hash: md5
-      md5: 074d54e1022ba1f6f10aeac7bedf5ba1.dir
-      size: 5916020
+      md5: a176490d457e1ff4c5d054536f93e4c5.dir
+      size: 5927732
       nfiles: 8
     params:
       params.yaml:
@@ -476,7 +476,7 @@ stages:
     outs:
     - path: data/results/study
       hash: md5
-      md5: b33ba8a6fbb7b0773407544049b7e0c7.dir
+      md5: 5626aa2853f39ef3144b7339e4b120ec.dir
       size: 6972
       nfiles: 8
   download_SBSITests_results:
@@ -492,8 +492,8 @@ stages:
     deps:
     - path: aml_magic/src/stages/summarize_results.py
       hash: md5
-      md5: 995b4e111fe54b56069c393e7feb863f
-      size: 15309
+      md5: 09141e8912b274fc7c0b5462f5157a1f
+      size: 15384
     - path: data/results/prev_paper
       hash: md5
       md5: e83c34a89219daeca4fd6792f5f6670b.dir
@@ -501,12 +501,12 @@ stages:
       nfiles: 24
     - path: data/results/study
       hash: md5
-      md5: b33ba8a6fbb7b0773407544049b7e0c7.dir
+      md5: 5626aa2853f39ef3144b7339e4b120ec.dir
       size: 6972
       nfiles: 8
     outs:
     - path: data/results/comparison
       hash: md5
-      md5: 9ea6e8440d59de1a4a9a09dfea819892.dir
+      md5: 9fd2f92cd757ec6851bc454070796827.dir
       size: 123099
       nfiles: 12
