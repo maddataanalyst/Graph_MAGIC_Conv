@@ -510,3 +510,34 @@ stages:
       md5: 9fd2f92cd757ec6851bc454070796827.dir
       size: 123099
       nfiles: 12
+  hp_tune:
+    cmd: python aml_magic/src/stages/hp_tune.py
+    deps:
+    - path: aml_magic/src/stages/hp_tune.py
+      hash: md5
+      md5: 5626d35915a6ec5a134872cf521e9070
+      size: 6322
+    - path: data/raw
+      hash: md5
+      md5: 9bcbd57a4aaac67345345e8e955540c5.dir
+      size: 68539656
+      nfiles: 1464
+    params:
+      stage_params/hp_tune.yaml:
+        params:
+          n_trials: 40
+          max_epochs: 20
+          batch_size: 16
+          hp_out_path:
+          tuning_out_path: data/hp_results/
+          tuning_datasets:
+          - amlsim_31
+          - amlsim_51
+          - amlsim_101
+          - amlsim_201
+    outs:
+    - path: data/hp_results
+      hash: md5
+      md5: ac8e2449afa72652abcbfa465db7e158.dir
+      size: 88252
+      nfiles: 4

@@ -7,6 +7,7 @@ STAGE_PARAMS_DIR = "stage_params"
 PARAM_STAGES = "stages"
 
 STAGE_PREPARE_DATA = "prepare_data"
+STAGE_HP_TUNE = "hp_tune"
 STAGE_GNN_TRAINING = "gnn_training"
 STAGE_GB_TRAINING = "gb_training"
 

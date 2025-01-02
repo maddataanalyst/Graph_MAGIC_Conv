@@ -45,7 +45,8 @@ def train_aml_magic(
     test_loader: pyg.data.DataLoader,
     train_loader: pyg.data.DataLoader,
     training_config: cfg.DatasetTrainConfig,
-    mlflow_tracking_uri: str,
+    mlflow_tracking_uri: str = "http://localhost:5000",
+    mlflow_logging: bool = True,
 ) -> pl.LightningModule:
     """Training AML MAGIC model.
 
@@ -66,6 +67,8 @@ def train_aml_magic(
     training_config : cfg.DatasetTrainConfig
         Training configuration.
     mlflow_tracking_uri: str
+    mlflow_logging: bool
+        Whether to log to MLFlow.
 
     Returns
     -------
@@ -76,14 +79,18 @@ def train_aml_magic(
     torch.manual_seed(execution + 100)
     torch.use_deterministic_algorithms(True)
     lit_model = MAGICPl(**model_config.model_dump())
-    loggers = [
-        pl.loggers.MLFlowLogger(
-            tracking_uri=mlflow_tracking_uri,
-            experiment_name=experiment_name,
-            run_name=f"{run_name}",
-        ),
-        pl.loggers.TensorBoardLogger(save_dir="./tb_logs", name=experiment_name),
-    ]
+    loggers = (
+        [
+            pl.loggers.MLFlowLogger(
+                tracking_uri=mlflow_tracking_uri,
+                experiment_name=experiment_name,
+                run_name=f"{run_name}",
+            ),
+            pl.loggers.TensorBoardLogger(save_dir="./tb_logs", name=experiment_name),
+        ]
+        if mlflow_logging
+        else None
+    )
     early_stop = pl.callbacks.early_stopping.EarlyStopping(
         monitor="train_f1", patience=10, mode="max"
     )
@@ -166,7 +173,7 @@ def train_gb(
     experiment_name: str,
     run_name: str,
     config_for_gb: cfg.XGBoostConfig | cfg.LightGBMConfig,
-    mlflow_tracking_uri: str,
+    mlflow_tracking_uri: str = "http://localhost:5000",
 ) -> GBTrainingResults:
     """A generic function for training the Gradient Boosting model - either the
     XGBoost or LightGBM.

@@ -19,6 +19,16 @@ stages:
       - params
     outs:
     - data/processed
+  hp_tune:
+    cmd: python aml_magic/src/stages/hp_tune.py
+    deps:
+      - data/raw
+      - aml_magic/src/stages/hp_tune.py
+    params:
+      - stage_params/hp_tune.yaml:
+        - params
+    outs:
+      - data/hp_results
   train_and_test_models:
     cmd: python aml_magic/src/stages/train_and_test_models.py
     deps:
