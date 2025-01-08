@@ -1,5 +1,6 @@
 """Module that contains model-specific training functions."""
-
+import os
+import random
 import autoroot  # noqa
 import torch
 import numpy as np
@@ -35,6 +36,24 @@ class GBTrainingResults:
     prec_illicit: float
     rec_illicit: float
     f1_illicit: float
+
+
+def _ensure_reproducible(seed: int):
+    """Ensure reproducibility by setting seeds for various libraries."""
+    pyg.seed_everything(seed)
+    torch.manual_seed(seed)
+    pl.seed_everything(seed, workers=True)
+    np.random.seed(seed)
+    random.seed(seed)
+    os.environ["PYTHONHASHSEED"] = str(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.enabled = False
+    torch.use_deterministic_algorithms(True)
 
 
 def train_aml_magic(
@@ -75,9 +94,8 @@ def train_aml_magic(
     pl.LightningModule
         Trained model.
     """
-    pyg.seed_everything(execution + 100)
-    torch.manual_seed(execution + 100)
-    torch.use_deterministic_algorithms(True)
+    seed = execution + 100
+    _ensure_reproducible(seed)
     lit_model = MAGICPl(**model_config.model_dump())
     loggers = (
         [
