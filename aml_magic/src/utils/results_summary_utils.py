@@ -24,6 +24,9 @@ def load_study(ds_name: str):
     return joblib.load(Path(cc.DATA_DIR, "hp_results", f"{ds_name}_study.pkl"))
 
 
+def get_study_trials(study: opt.study.Study, sort_by: tuple = (1, 2), ascending: tuple = (False, True)):
+    return study.trials_dataframe().sort_values(by=[f"values_{i}" for i in sort_by], ascending=ascending)
+
 def get_feature_importance(study, target: int = 1):
     optuna_importance = opt.importance.PedAnovaImportanceEvaluator(
         baseline_quantile=0.1

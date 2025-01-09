@@ -15,39 +15,20 @@ params:
         lr: 0.005
         batch_norm: true
         weight: null
-        aggr: add
+        aggr:
+          - add
+          - mean
         gin_inner_layers: 1
       dataset_configs:
         amlsim_31:
           dim_input: 6
           dim_edge: 8
           conv_sizes:
-            - 16
-            - 16
-            - 16
-          linkpred_sizes:
-            - 16
-            - 16
-          embed_reduction_mode: concat
-          eps: 1.0
-          n_cls: 2
-          lr: 0.005
-          batch_norm: true
-          weight: null
-          aggr: softmax
-          aggr_kwargs:
-            t: 0.8
-          gin_inner_layers: 2
-        amlsim_51:
-          dim_input: 6
-          dim_edge: 8
-          conv_sizes:
-            - 8
             - 8
             - 8
           linkpred_sizes:
-            - 8
-            - 8
+            - 16
+            - 16
           embed_reduction_mode: concat
           eps: 1.0
           n_cls: 2
@@ -55,9 +36,25 @@ params:
           batch_norm: true
           weight: null
           aggr:
-            - add
-            - min
-            - max
+             - add
+             - mean
+          gin_inner_layers: 2
+        amlsim_51:
+          dim_input: 6
+          dim_edge: 8
+          conv_sizes:
+            - 8
+            - 8
+          linkpred_sizes:
+            - 8
+            - 8
+          embed_reduction_mode: mean
+          eps: 1.0
+          n_cls: 2
+          lr: 0.005
+          batch_norm: true
+          weight: null
+          aggr: add
           gin_inner_layers: 2
         amlsim_101:
           dim_input: 6
@@ -65,9 +62,7 @@ params:
           conv_sizes:
             - 16
             - 16
-            - 16
           linkpred_sizes:
-            - 32
             - 16
             - 8
           embed_reduction_mode: mean
@@ -78,19 +73,16 @@ params:
           weight: null
           aggr:
             - add
-            - max
-            - min
+            - mean
           gin_inner_layers: 1
         amlsim_201:
           dim_input: 6
           dim_edge: 8
           conv_sizes:
-            - 16
-            - 16
-            - 16
+            - 32
+            - 32
           linkpred_sizes:
-            - 16
-            - 8
+            - 32
           embed_reduction_mode: concat
           eps: 1.0
           n_cls: 2
@@ -99,10 +91,9 @@ params:
           weight:
             - 0.2
             - 0.8
-          aggr:
+          aggr: 
             - add
-            - min
-            - max
+            - mean
           gin_inner_layers: 1
     training_configs:
       default:

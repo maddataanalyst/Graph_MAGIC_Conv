@@ -1,6 +1,6 @@
 # Anti - Money Laundering MAGIC
 
-This repository accompanies the research paper titled "**Money Laundering Detection with Multi-Aggregation Custom Edge GIN Networks**," which is currently under review.
+This repository accompanies the research paper titled "**Money Laundering Detection with Multi-Aggregation Custom Edge GIN**," which is currently under review.
 
 From the paper's abstract:
 
@@ -26,52 +26,60 @@ The proposed model is an extension of the Graph Isomorphism Networks (GIN), enha
 
 The pseudocode for the model is as follows:
 
-![model pseudocode](pseudocode.png)
+![Model pseudocode](readme_figures/algorithm.png)
 
 
 # Installation instructions
 
+**All commands should be executed from inside the main project directory: `Graph_MAGIC_Conv/`**
+
 There are two primary methods for installing this project:
 
-## Manual Installation
+## Installation and running on Lightning AI Studio
+
+Execute the following
+
+1. `conda env update --file environment.yaml`
+2. `poetry install --with dev --with jupyter --no-root`
+
+
+## Manual Installation - locally
 
 Ensure that Anaconda or Miniconda is installed.
 
 Create a new conda environment using the provided environment.yml file:
-
+(this step can be skipped on e.g. Lightning AI studio, as conda env is already there)
 ```
 conda env create -f environment.yaml
 ```
 
 Activate the environment:
-
+(this step can be skipped on e.g. Lightning AI studio, as conda env is already there)
 ```
 conda activate aml_magic
-```
-
-Install Poetry, the main package manager used in this project:
-
-```
-pip install poetry
 ```
 
 Install the package along with all dependencies:
 
 ```
-poetry install --with dev --with jupyter
+poetry install --with dev --with jupyter --no-root
 ```
 
 To use the package, ensure the environment is activated.
 
-# Running the experiments
+# Running experiments
 
-## DVC pipeline
+**All commands should be executed from inside the main project directory: `Graph_MAGIC_Conv/`**
+
+## DVC pipeline for training models and reproducing results
 
 The experiments are managed using DVC. To run the experiments, execute the following command:
 
 ```
-dvc repro
+dvc repro summarize_results --force
 ```
+
+`--force` flag ignores previous results and recalculates everything from scratch.
 
 This will perform the following steps:
 1. Download the raw data from the study by Silva et al.
@@ -81,6 +89,22 @@ This will perform the following steps:
 5. Save the results to the MLFlow tracking server.
 6. Generate a summary of the results and LaTeX tables.
 
+## DVC pipeline for hyperparameter tuning
+
+To run the hyperparameter tuning experiments, execute the following command:
+
+```
+dvc repro hp_tune --force
+```
+
+`--force` flag ignores previous results and recalculates everything from scratch.
+
+This will perform the following steps:
+1. Prepare the data.
+2. Run the hyperparameter tuning experiments - this may take **several hours**.
+
+If you don't need to run the hyperparameter tuning, you can skip this step! 
+
 ## Check results
 
 ### In result files
@@ -89,14 +113,14 @@ This will perform the following steps:
 
 1. Directory `results/study/` contains a separate folder for each dataset (e.g. `amlsim_31_CI_SUMMARY`) with two files inside:
    1. `DATASET_NAME_xgboost_raw.csv` - raw scores for each fold and metric for the XGBoost link predictor;
-   2. `DATASET_NAME_xgboost.csv` - aggregates summary scores (mean, +/- std. deviation) for each metric after full cross-validation.
+   2. `DATASET_NAME_xgboost.csv` - aggregates summary scores (mean, +/- std. deviation) for each metric after full cross-validation. **Main point of interest**.
 2. Directory `results/comparison/' contains the following files and folders:
    1. `scores_summary.csv` and `scores_summary.xlsx` - a comparison of the aggregated results for each model (including those from previous study) and metric. **Data from this file was used to report results in paper**.
    2. `DATASET_NAME_scores.tex` - LaTeX tables with aggregated results for each dataset and metric. **Code for this tables was used in the paper**.
    3. `figures/` - a folder with detailed comparison boxplots for each dataset, each metric and models (including those from previous study).
 
 
-### In jupyter notebook
+### In the Jupyter notebook
 
 **Only after you run the DVC pipeline**, you can visualize the results in the Jupyter notebook:
 
@@ -105,7 +129,7 @@ notebooks/summarize_results.ipynb
 ```
 This notebook allows you to visualize raw scores from each approach, as well as the aggregated results, confidence intervals, etc.
 
-### In MLFlow
+### In the MLFlow
 
 **Only after you run the DVC pipeline**, you can visualize the results in MLFlow:
 
@@ -122,6 +146,11 @@ There are two types of experiments in MLFlow, varying by the naming convention:
    2. XGBoost link prediction.
    Therefore number of records for each dataset is equal to the number of folds times 2.
 
+## Dependency graph
+
+Diagram below presents the dependency graph of the DVC pipeline. Each stage is represented by a separate node, with the arrows indicating the dependencies between the stages.
+
+![Stages graph](readme_figures/stages_graph.png)
 
 # Technologies and tools
 

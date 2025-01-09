@@ -1,5 +1,5 @@
 params:
-  n_trials: 40
+  n_trials: 30
   max_epochs: 20
   batch_size: 16
   hp_out_path:
