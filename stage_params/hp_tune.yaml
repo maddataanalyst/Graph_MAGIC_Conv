@@ -1,7 +1,7 @@
 params:
   n_trials: 30
   max_epochs: 20
-  batch_size: 16
+  batch_size: 128
   hp_out_path:
   tuning_out_path: data/hp_results/
   tuning_datasets:

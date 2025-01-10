@@ -69,8 +69,8 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: 005da7bfbe130592ddcdb448f5dd2640.dir
-      size: 5927732
+      md5: 40790d38466f3b5385714809bee70204.dir
+      size: 5916029
       nfiles: 8
   gnn_training:
     cmd: python aml_magic/src/stages/train_gnn.py
@@ -262,8 +262,8 @@ stages:
       size: 6722
     - path: data/processed
       hash: md5
-      md5: 005da7bfbe130592ddcdb448f5dd2640.dir
-      size: 5927732
+      md5: 40790d38466f3b5385714809bee70204.dir
+      size: 5916029
       nfiles: 8
     params:
       params.yaml:
@@ -273,7 +273,7 @@ stages:
         - amlsim_101
         - amlsim_201
         gradient_boosting_impl: xgboost
-        n_repeats: 3
+        n_repeats: 10
       stage_params/gb_training.yaml:
         params:
           xgboost:
@@ -432,33 +432,33 @@ stages:
                 gin_inner_layers: 1
           training_configs:
             default:
-              max_epochs: 5
-              batch_size: 4
+              max_epochs: 100
+              batch_size: 64
               accelerator: cpu
               use_swa: false
               swa_lrs: 0.01
             dataset_training_configs:
               amlsim_31:
-                max_epochs: 5
-                batch_size: 10
+                max_epochs: 100
+                batch_size: 64
                 accelerator: cpu
                 use_swa: true
                 swa_lrs: 0.05
               amlsim_51:
-                max_epochs: 5
-                batch_size: 4
+                max_epochs: 100
+                batch_size: 64
                 accelerator: cpu
                 use_swa: true
                 swa_lrs: 0.05
               amlsim_101:
-                max_epochs: 5
-                batch_size: 4
+                max_epochs: 100
+                batch_size: 64
                 accelerator: cpu
                 use_swa: true
                 swa_lrs: 0.05
               amlsim_201:
-                max_epochs: 5
-                batch_size: 4
+                max_epochs: 100
+                batch_size: 64
                 accelerator: cpu
                 use_swa: true
                 swa_lrs: 0.05
@@ -467,8 +467,8 @@ stages:
     outs:
     - path: data/results/study
       hash: md5
-      md5: 1da30a9f5b5bbba0b6b7dae2186da7b3.dir
-      size: 3337
+      md5: db06b00ca531832317062d3cef3d781c.dir
+      size: 6949
       nfiles: 8
   download_SBSITests_results:
     cmd: dvc get https://gitlab.com/italodellagarza/SBSITests/ results -o ./data/results/prev_paper
@@ -492,14 +492,14 @@ stages:
       nfiles: 24
     - path: data/results/study
       hash: md5
-      md5: 1da30a9f5b5bbba0b6b7dae2186da7b3.dir
-      size: 3337
+      md5: db06b00ca531832317062d3cef3d781c.dir
+      size: 6949
       nfiles: 8
     outs:
     - path: data/results/comparison
       hash: md5
-      md5: 8526fd5668e2a2e0f14fd4012b9a2799.dir
-      size: 121082
+      md5: bac7993b80443ecd9a35e4495449e242.dir
+      size: 122653
       nfiles: 12
   hp_tune:
     cmd: python aml_magic/src/stages/hp_tune.py
