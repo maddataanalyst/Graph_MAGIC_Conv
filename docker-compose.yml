@@ -10,12 +10,10 @@ services:
       conda init bash && \
       . ~/.bashrc && \
       if [ ! -d /opt/conda/envs/aml_magic ]; then
-        conda env create -f environment.yaml;
+        conda env create -f env.yml;
       fi && \
       conda init bash && \
       conda activate aml_magic && \
-      pip install poetry && \
-      poetry install --with dev --with jupyter --no-root && \
       dvc repro summarize_results --force
       "
     tty: true
