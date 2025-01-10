@@ -69,8 +69,8 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: 0077f5d8474fad215b301e32b19ad22e.dir
-      size: 5857436
+      md5: 63ca795914d2a2a1b9b5c5a1906b5161.dir
+      size: 5927732
       nfiles: 8
   gnn_training:
     cmd: python aml_magic/src/stages/train_gnn.py
@@ -244,31 +244,26 @@ stages:
       hash: md5
       md5: 557fad337cb37bacfc1b81993bc615f6
       size: 485
-      isexec: true
     - path: aml_magic/src/models/metrics.py
       hash: md5
       md5: 620b469f41369b05374b2342b5444390
       size: 6588
-      isexec: true
     - path: aml_magic/src/models/training.py
       hash: md5
       md5: 497fe4be7dd193096e11f09f956a37b7
       size: 8281
-      isexec: true
     - path: aml_magic/src/stages/train_and_test_models.py
       hash: md5
       md5: 2d6139b254bb73716663aa74b3f675e7
       size: 6351
-      isexec: true
     - path: aml_magic/src/utils/configs.py
       hash: md5
-      md5: 8ef643378683aa3985fdae237c18f0ad
-      size: 6696
-      isexec: true
+      md5: 047c1a423c4aa2d3b7aa4438f62ac10c
+      size: 6722
     - path: data/processed
       hash: md5
-      md5: 0077f5d8474fad215b301e32b19ad22e.dir
-      size: 5857436
+      md5: 63ca795914d2a2a1b9b5c5a1906b5161.dir
+      size: 5927732
       nfiles: 8
     params:
       params.yaml:
@@ -278,7 +273,7 @@ stages:
         - amlsim_101
         - amlsim_201
         gradient_boosting_impl: xgboost
-        n_repeats: 10
+        n_repeats: 3
       stage_params/gb_training.yaml:
         params:
           xgboost:
@@ -344,11 +339,12 @@ stages:
               dim_input: 6
               dim_edge: 8
               conv_sizes:
-              - 16
+              - 8
+              - 8
               - 8
               linkpred_sizes:
               - 8
-              embed_reduction_mode: concat
+              embed_reduction_mode: mean
               eps: 1.0
               n_cls: 2
               lr: 0.005
@@ -436,32 +432,32 @@ stages:
                 gin_inner_layers: 1
           training_configs:
             default:
-              max_epochs: 100
+              max_epochs: 5
               batch_size: 4
               accelerator: cpu
               use_swa: false
               swa_lrs: 0.01
             dataset_training_configs:
               amlsim_31:
-                max_epochs: 100
+                max_epochs: 5
                 batch_size: 10
                 accelerator: cpu
                 use_swa: true
                 swa_lrs: 0.05
               amlsim_51:
-                max_epochs: 100
+                max_epochs: 5
                 batch_size: 4
                 accelerator: cpu
                 use_swa: true
                 swa_lrs: 0.05
               amlsim_101:
-                max_epochs: 100
+                max_epochs: 5
                 batch_size: 4
                 accelerator: cpu
                 use_swa: true
                 swa_lrs: 0.05
               amlsim_201:
-                max_epochs: 100
+                max_epochs: 5
                 batch_size: 4
                 accelerator: cpu
                 use_swa: true
@@ -471,8 +467,8 @@ stages:
     outs:
     - path: data/results/study
       hash: md5
-      md5: 2a14d5e228a529f7f629b6f6d7124310.dir
-      size: 6896
+      md5: 1da30a9f5b5bbba0b6b7dae2186da7b3.dir
+      size: 3337
       nfiles: 8
   download_SBSITests_results:
     cmd: dvc get https://gitlab.com/italodellagarza/SBSITests/ results -o ./data/results/prev_paper
@@ -489,7 +485,6 @@ stages:
       hash: md5
       md5: 09141e8912b274fc7c0b5462f5157a1f
       size: 15384
-      isexec: true
     - path: data/results/prev_paper
       hash: md5
       md5: e83c34a89219daeca4fd6792f5f6670b.dir
@@ -497,14 +492,14 @@ stages:
       nfiles: 24
     - path: data/results/study
       hash: md5
-      md5: 2a14d5e228a529f7f629b6f6d7124310.dir
-      size: 6896
+      md5: 1da30a9f5b5bbba0b6b7dae2186da7b3.dir
+      size: 3337
       nfiles: 8
     outs:
     - path: data/results/comparison
       hash: md5
-      md5: 3f5c42e807b17c10ff13373b4eec8be6.dir
-      size: 123143
+      md5: 2092513ff75d7bc81c85ec12cdb431e7.dir
+      size: 121083
       nfiles: 12
   hp_tune:
     cmd: python aml_magic/src/stages/hp_tune.py

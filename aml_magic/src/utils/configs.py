@@ -183,6 +183,7 @@ class XGBoostConfig(BaseModel):
             n_estimators=self.n_estimators,
             learning_rate=self.learning_rate,
             n_jobs=self.n_jobs,
+            device="cpu",
             scale_pos_weight=self.scale_pos_weight,
         )
 
