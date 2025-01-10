@@ -5,6 +5,7 @@ import typer
 import torch
 import torch_geometric as pyg
 import joblib
+import numpy as np
 from typing import List, Tuple
 from tqdm.auto import tqdm
 
@@ -34,7 +35,10 @@ def load_graphs(
     """
     graphs = []
     dataset_path = config.get_dataset_input_path(dataset)
-    for ptfile in dataset_path.iterdir():
+    data_files = sorted(list(dataset_path.iterdir()))
+    np.random.seed(123)
+    np.random.shuffle(data_files)
+    for ptfile in data_files:
         if ptfile.suffix == ".pt":
             ds = torch.load(ptfile)
             ds_pyg = pyg.data.Data(

@@ -98,32 +98,32 @@ params:
     training_configs:
       default:
           max_epochs: 100
-          batch_size: 64
+          batch_size: 128
           accelerator: cpu
           use_swa: false
           swa_lrs: 0.01
       dataset_training_configs:
         amlsim_31:
           max_epochs: 100
-          batch_size: 64
+          batch_size: 128
           accelerator: cpu
           use_swa: true
           swa_lrs: 0.05
         amlsim_51:
           max_epochs: 100
-          batch_size: 64
+          batch_size: 128
           accelerator: cpu
           use_swa: true
           swa_lrs: 0.05
         amlsim_101:
           max_epochs: 100
-          batch_size: 64
+          batch_size: 128
           accelerator: cpu
           use_swa: true
           swa_lrs: 0.05
         amlsim_201:
           max_epochs: 100
-          batch_size: 64
+          batch_size: 128
           accelerator: cpu
           use_swa: true
           swa_lrs: 0.05
