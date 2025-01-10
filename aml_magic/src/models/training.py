@@ -1,4 +1,5 @@
 """Module that contains model-specific training functions."""
+
 import os
 import random
 import autoroot  # noqa
@@ -218,8 +219,9 @@ def train_gb(
     with mlf.start_run(run_name=run_name) as run:
         mlf.lightgbm.autolog(log_models=False, log_datasets=False)
         mlf.xgboost.autolog(log_models=False, log_datasets=False)
-
+        np.random.seed(config_for_gb.random_state)
         model = config_for_gb.build_model()
+        np.random.seed(config_for_gb.random_state)
         model.fit(datas_for_gb.X_train, datas_for_gb.y_train)
         y_pred_lgbm = model.predict(datas_for_gb.X_test)
 

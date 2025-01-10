@@ -21,8 +21,8 @@ stages:
       size: 2836
     - path: aml_magic/src/utils/configs.py
       hash: md5
-      md5: 8ef643378683aa3985fdae237c18f0ad
-      size: 6696
+      md5: 047c1a423c4aa2d3b7aa4438f62ac10c
+      size: 6722
     - path: data/raw
       hash: md5
       md5: 9bcbd57a4aaac67345345e8e955540c5.dir
@@ -69,7 +69,7 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: 63ca795914d2a2a1b9b5c5a1906b5161.dir
+      md5: 005da7bfbe130592ddcdb448f5dd2640.dir
       size: 5927732
       nfiles: 8
   gnn_training:
@@ -250,8 +250,8 @@ stages:
       size: 6588
     - path: aml_magic/src/models/training.py
       hash: md5
-      md5: 497fe4be7dd193096e11f09f956a37b7
-      size: 8281
+      md5: 5e6a0aafea8a6e7ddefe7bac06608d83
+      size: 8383
     - path: aml_magic/src/stages/train_and_test_models.py
       hash: md5
       md5: 2d6139b254bb73716663aa74b3f675e7
@@ -262,7 +262,7 @@ stages:
       size: 6722
     - path: data/processed
       hash: md5
-      md5: 63ca795914d2a2a1b9b5c5a1906b5161.dir
+      md5: 005da7bfbe130592ddcdb448f5dd2640.dir
       size: 5927732
       nfiles: 8
     params:
@@ -498,8 +498,8 @@ stages:
     outs:
     - path: data/results/comparison
       hash: md5
-      md5: 2092513ff75d7bc81c85ec12cdb431e7.dir
-      size: 121083
+      md5: 8526fd5668e2a2e0f14fd4012b9a2799.dir
+      size: 121082
       nfiles: 12
   hp_tune:
     cmd: python aml_magic/src/stages/hp_tune.py
