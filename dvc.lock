@@ -17,8 +17,8 @@ stages:
       size: 485
     - path: aml_magic/src/stages/prepare_data.py
       hash: md5
-      md5: 97e77724505dbe319323ed86fe478c0d
-      size: 2836
+      md5: ea250977a39588a623db0a3aa7d7e35b
+      size: 2955
     - path: aml_magic/src/utils/configs.py
       hash: md5
       md5: 047c1a423c4aa2d3b7aa4438f62ac10c
@@ -69,8 +69,8 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: 40790d38466f3b5385714809bee70204.dir
-      size: 5916029
+      md5: d4d8fe8d18f7b47f8ccffaad16dba6e6.dir
+      size: 5916020
       nfiles: 8
   gnn_training:
     cmd: python aml_magic/src/stages/train_gnn.py
@@ -262,8 +262,8 @@ stages:
       size: 6722
     - path: data/processed
       hash: md5
-      md5: 40790d38466f3b5385714809bee70204.dir
-      size: 5916029
+      md5: d4d8fe8d18f7b47f8ccffaad16dba6e6.dir
+      size: 5916020
       nfiles: 8
     params:
       params.yaml:
@@ -359,8 +359,8 @@ stages:
                 dim_input: 6
                 dim_edge: 8
                 conv_sizes:
-                - 8
-                - 8
+                - 64
+                - 64
                 linkpred_sizes:
                 - 16
                 - 16
@@ -372,18 +372,19 @@ stages:
                 weight:
                 aggr:
                 - add
-                - mean
+                - min
+                - max
                 gin_inner_layers: 2
               amlsim_51:
                 dim_input: 6
                 dim_edge: 8
                 conv_sizes:
-                - 8
-                - 8
+                - 64
+                - 64
                 linkpred_sizes:
-                - 8
-                - 8
-                embed_reduction_mode: mean
+                - 64
+                - 64
+                embed_reduction_mode: concat
                 eps: 1.0
                 n_cls: 2
                 lr: 0.005
@@ -395,12 +396,11 @@ stages:
                 dim_input: 6
                 dim_edge: 8
                 conv_sizes:
-                - 16
-                - 16
+                - 32
+                - 32
                 linkpred_sizes:
-                - 16
                 - 8
-                embed_reduction_mode: mean
+                embed_reduction_mode: concat
                 eps: 1.0
                 n_cls: 2
                 lr: 0.005
@@ -408,7 +408,8 @@ stages:
                 weight:
                 aggr:
                 - add
-                - mean
+                - min
+                - max
                 gin_inner_layers: 1
               amlsim_201:
                 dim_input: 6
@@ -433,7 +434,7 @@ stages:
           training_configs:
             default:
               max_epochs: 100
-              batch_size: 64
+              batch_size: 128
               accelerator: cpu
               use_swa: false
               swa_lrs: 0.01
@@ -458,7 +459,7 @@ stages:
                 swa_lrs: 0.05
               amlsim_201:
                 max_epochs: 100
-                batch_size: 64
+                batch_size: 128
                 accelerator: cpu
                 use_swa: true
                 swa_lrs: 0.05
@@ -467,8 +468,8 @@ stages:
     outs:
     - path: data/results/study
       hash: md5
-      md5: db06b00ca531832317062d3cef3d781c.dir
-      size: 6949
+      md5: a7aa4b37804e1fca98f667212b6f40ad.dir
+      size: 6961
       nfiles: 8
   download_SBSITests_results:
     cmd: dvc get https://gitlab.com/italodellagarza/SBSITests/ results -o ./data/results/prev_paper
@@ -492,22 +493,22 @@ stages:
       nfiles: 24
     - path: data/results/study
       hash: md5
-      md5: db06b00ca531832317062d3cef3d781c.dir
-      size: 6949
+      md5: a7aa4b37804e1fca98f667212b6f40ad.dir
+      size: 6961
       nfiles: 8
     outs:
     - path: data/results/comparison
       hash: md5
-      md5: bac7993b80443ecd9a35e4495449e242.dir
-      size: 122653
+      md5: 5739fe4db6599528028a629fc9b79ac7.dir
+      size: 122556
       nfiles: 12
   hp_tune:
     cmd: python aml_magic/src/stages/hp_tune.py
     deps:
     - path: aml_magic/src/stages/hp_tune.py
       hash: md5
-      md5: 5626d35915a6ec5a134872cf521e9070
-      size: 6322
+      md5: 66987e552198ef80d6b18ac5da1314ac
+      size: 6664
     - path: data/raw
       hash: md5
       md5: 9bcbd57a4aaac67345345e8e955540c5.dir
@@ -516,9 +517,9 @@ stages:
     params:
       stage_params/hp_tune.yaml:
         params:
-          n_trials: 30
-          max_epochs: 20
-          batch_size: 16
+          n_trials: 50
+          max_epochs: 25
+          batch_size: 64
           hp_out_path:
           tuning_out_path: data/hp_results/
           tuning_datasets:
@@ -529,6 +530,6 @@ stages:
     outs:
     - path: data/hp_results
       hash: md5
-      md5: 603632500fc03d52efff26aaf785f428.dir
-      size: 78972
+      md5: a011653ccaa86cc0311ad4b113ca3f30.dir
+      size: 87292
       nfiles: 4

@@ -36,7 +36,7 @@ def load_graphs(
     graphs = []
     dataset_path = config.get_dataset_input_path(dataset)
     data_files = sorted(list(dataset_path.iterdir()))
-    np.random.seed(123)
+    np.random.seed(111)
     np.random.shuffle(data_files)
     for ptfile in data_files:
         if ptfile.suffix == ".pt":

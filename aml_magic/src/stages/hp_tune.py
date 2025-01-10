@@ -16,9 +16,11 @@ from copy import deepcopy
 
 PARAMS_GRID = {
     "n_convs": [1, 2, 3, 6],
+    "n_linkpred": [1, 2, 3],
+    "linkpred_sizes": [8, 16, 32, 64],
     "gnn_sizes": [8, 16, 32, 64],
     "embed_reduction_mode": ["concat", "mean"],
-    "aggr": ["('add')", "('softmax')", "('add', 'min', 'max')"],
+    "aggr": ["('add')", "('softmax')", "('mean')", "('add', 'min', 'max')", "('add', 'mean')"],
 }
 
 
@@ -118,12 +120,15 @@ def objective(trial, configs: Configs, data_container: DataContainer):
             "embed_reduction_mode", PARAMS_GRID["embed_reduction_mode"]
         ),
         "aggr": eval(trial.suggest_categorical("aggr", PARAMS_GRID["aggr"])),
+        "n_linkpred": trial.suggest_categorical("n_linkpred", PARAMS_GRID["n_linkpred"]),
+        "linkpred_sizes": trial.suggest_categorical("linkpred_sizes", PARAMS_GRID["linkpred_sizes"])
     }
     base_arch = configs.training_configs.get_achitecture_for_dataset(configs.dsname)
     arch = deepcopy(base_arch)
     arch.conv_sizes = tuple([params["gnn_sizes"]] * params["n_convs"])
     arch.embed_reduction_mode = params["embed_reduction_mode"]
     arch.aggr = params["aggr"]
+    arch.linkpred_sizes = tuple([params["linkpred_sizes"]] * params["n_linkpred"])
     gnn_model = training.train_aml_magic(
         1,
         f"tuning_{configs.dsname}",
