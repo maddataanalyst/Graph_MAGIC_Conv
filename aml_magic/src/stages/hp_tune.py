@@ -15,7 +15,7 @@ from pathlib import Path
 from copy import deepcopy
 
 PARAMS_GRID = {
-    "n_convs": [1, 2, 3, 6],
+    "n_convs": [1, 2, 3],
     "n_linkpred": [1, 2, 3],
     "linkpred_sizes": [8, 16, 32, 64],
     "gnn_sizes": [8, 16, 32, 64],

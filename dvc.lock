@@ -359,10 +359,28 @@ stages:
                 dim_input: 6
                 dim_edge: 8
                 conv_sizes:
-                - 64
-                - 64
+                - 8
+                - 8
                 linkpred_sizes:
+                - 64
+                embed_reduction_mode: mean
+                eps: 1.0
+                n_cls: 2
+                lr: 0.005
+                batch_norm: true
+                weight:
+                aggr:
+                - add
+                - mean
+                gin_inner_layers: 1
+              amlsim_51:
+                dim_input: 6
+                dim_edge: 8
+                conv_sizes:
                 - 16
+                - 16
+                linkpred_sizes:
+                - 32
                 - 16
                 embed_reduction_mode: concat
                 eps: 1.0
@@ -372,32 +390,14 @@ stages:
                 weight:
                 aggr:
                 - add
-                - min
-                - max
-                gin_inner_layers: 2
-              amlsim_51:
-                dim_input: 6
-                dim_edge: 8
-                conv_sizes:
-                - 64
-                - 64
-                linkpred_sizes:
-                - 64
-                - 64
-                embed_reduction_mode: concat
-                eps: 1.0
-                n_cls: 2
-                lr: 0.005
-                batch_norm: true
-                weight:
-                aggr: add
-                gin_inner_layers: 2
+                - mean
+                gin_inner_layers: 1
               amlsim_101:
                 dim_input: 6
                 dim_edge: 8
                 conv_sizes:
-                - 32
-                - 32
+                - 16
+                - 16
                 linkpred_sizes:
                 - 8
                 embed_reduction_mode: concat
@@ -415,11 +415,13 @@ stages:
                 dim_input: 6
                 dim_edge: 8
                 conv_sizes:
-                - 32
-                - 32
+                - 16
+                - 16
+                - 16
                 linkpred_sizes:
-                - 32
-                embed_reduction_mode: concat
+                - 8
+                - 8
+                embed_reduction_mode: mean
                 eps: 1.0
                 n_cls: 2
                 lr: 0.005
@@ -427,9 +429,7 @@ stages:
                 weight:
                 - 0.2
                 - 0.8
-                aggr:
-                - add
-                - mean
+                aggr: softmax
                 gin_inner_layers: 1
           training_configs:
             default:
@@ -441,13 +441,13 @@ stages:
             dataset_training_configs:
               amlsim_31:
                 max_epochs: 100
-                batch_size: 64
+                batch_size: 16
                 accelerator: cpu
                 use_swa: true
                 swa_lrs: 0.05
               amlsim_51:
                 max_epochs: 100
-                batch_size: 64
+                batch_size: 8
                 accelerator: cpu
                 use_swa: true
                 swa_lrs: 0.05
@@ -459,7 +459,7 @@ stages:
                 swa_lrs: 0.05
               amlsim_201:
                 max_epochs: 100
-                batch_size: 128
+                batch_size: 8
                 accelerator: cpu
                 use_swa: true
                 swa_lrs: 0.05
@@ -468,8 +468,8 @@ stages:
     outs:
     - path: data/results/study
       hash: md5
-      md5: a7aa4b37804e1fca98f667212b6f40ad.dir
-      size: 6961
+      md5: 17fc956d6326197c4e5fc913811ff087.dir
+      size: 6960
       nfiles: 8
   download_SBSITests_results:
     cmd: dvc get https://gitlab.com/italodellagarza/SBSITests/ results -o ./data/results/prev_paper
@@ -493,22 +493,22 @@ stages:
       nfiles: 24
     - path: data/results/study
       hash: md5
-      md5: a7aa4b37804e1fca98f667212b6f40ad.dir
-      size: 6961
+      md5: 17fc956d6326197c4e5fc913811ff087.dir
+      size: 6960
       nfiles: 8
     outs:
     - path: data/results/comparison
       hash: md5
-      md5: 5739fe4db6599528028a629fc9b79ac7.dir
-      size: 122556
+      md5: 062b24536f13221b2a63c58b60525bf5.dir
+      size: 121453
       nfiles: 12
   hp_tune:
     cmd: python aml_magic/src/stages/hp_tune.py
     deps:
     - path: aml_magic/src/stages/hp_tune.py
       hash: md5
-      md5: 66987e552198ef80d6b18ac5da1314ac
-      size: 6664
+      md5: 0dab959d4bd70a57e420814b299c20c2
+      size: 6692
     - path: data/raw
       hash: md5
       md5: 9bcbd57a4aaac67345345e8e955540c5.dir
@@ -530,6 +530,6 @@ stages:
     outs:
     - path: data/hp_results
       hash: md5
-      md5: a011653ccaa86cc0311ad4b113ca3f30.dir
-      size: 87292
+      md5: 86d978bd29c0a7df16a4a49b7484a232.dir
+      size: 87804
       nfiles: 4
