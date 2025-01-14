@@ -1,7 +1,0 @@
-name: aml_magic
-channels:
-  - conda-forge
-  - default
-dependencies:
-  - python=3.11.9
-  - poetry=2.0.0
