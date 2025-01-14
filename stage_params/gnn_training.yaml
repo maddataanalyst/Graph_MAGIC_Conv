@@ -27,7 +27,7 @@ params:
             - 8
             - 8
           linkpred_sizes:
-            - 64
+            - 32
           embed_reduction_mode: mean
           eps: 1.0
           n_cls: 2
@@ -80,13 +80,11 @@ params:
           dim_input: 6
           dim_edge: 8
           conv_sizes:
-            - 16
-            - 16
-            - 16
+            - 32
+            - 8
           linkpred_sizes:
-            - 8
-            - 8
-          embed_reduction_mode: mean
+            - 32
+          embed_reduction_mode: concat
           eps: 1.0
           n_cls: 2
           lr: 0.005
@@ -94,7 +92,9 @@ params:
           weight:
             - 0.2
             - 0.8
-          aggr: softmax
+          aggr: 
+            - add
+            - mean
           gin_inner_layers: 1
     training_configs:
       default:

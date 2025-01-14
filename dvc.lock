@@ -69,7 +69,7 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: d4d8fe8d18f7b47f8ccffaad16dba6e6.dir
+      md5: 4518e13798239154c38d28397011b849.dir
       size: 5916020
       nfiles: 8
   gnn_training:
@@ -262,7 +262,7 @@ stages:
       size: 6722
     - path: data/processed
       hash: md5
-      md5: d4d8fe8d18f7b47f8ccffaad16dba6e6.dir
+      md5: 4518e13798239154c38d28397011b849.dir
       size: 5916020
       nfiles: 8
     params:
@@ -362,7 +362,7 @@ stages:
                 - 8
                 - 8
                 linkpred_sizes:
-                - 64
+                - 32
                 embed_reduction_mode: mean
                 eps: 1.0
                 n_cls: 2
@@ -415,13 +415,11 @@ stages:
                 dim_input: 6
                 dim_edge: 8
                 conv_sizes:
-                - 16
-                - 16
-                - 16
+                - 32
+                - 8
                 linkpred_sizes:
-                - 8
-                - 8
-                embed_reduction_mode: mean
+                - 32
+                embed_reduction_mode: concat
                 eps: 1.0
                 n_cls: 2
                 lr: 0.005
@@ -429,7 +427,9 @@ stages:
                 weight:
                 - 0.2
                 - 0.8
-                aggr: softmax
+                aggr:
+                - add
+                - mean
                 gin_inner_layers: 1
           training_configs:
             default:
@@ -468,8 +468,8 @@ stages:
     outs:
     - path: data/results/study
       hash: md5
-      md5: 17fc956d6326197c4e5fc913811ff087.dir
-      size: 6960
+      md5: 1c77dd248e5bb5ba0d13306f395c3dfc.dir
+      size: 6969
       nfiles: 8
   download_SBSITests_results:
     cmd: dvc get https://gitlab.com/italodellagarza/SBSITests/ results -o ./data/results/prev_paper
@@ -493,14 +493,14 @@ stages:
       nfiles: 24
     - path: data/results/study
       hash: md5
-      md5: 17fc956d6326197c4e5fc913811ff087.dir
-      size: 6960
+      md5: 1c77dd248e5bb5ba0d13306f395c3dfc.dir
+      size: 6969
       nfiles: 8
     outs:
     - path: data/results/comparison
       hash: md5
-      md5: 062b24536f13221b2a63c58b60525bf5.dir
-      size: 121453
+      md5: c777a61499c1a07a7a958cd3bca78698.dir
+      size: 121905
       nfiles: 12
   hp_tune:
     cmd: python aml_magic/src/stages/hp_tune.py

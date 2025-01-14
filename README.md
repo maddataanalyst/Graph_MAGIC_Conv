@@ -35,37 +35,29 @@ The pseudocode for the model is as follows:
 
 There are two primary methods for installing this project:
 
-## Installation and running on Lightning AI Studio
-
-Execute the following
-
-1. `conda env update --file environment.yaml`
-2. `poetry install --with dev --with jupyter --no-root`
-
-
-## Manual Installation - locally
+## Local installation
 
 Ensure that Anaconda or Miniconda is installed.
 
 Create a new conda environment using the provided environment.yml file:
-(this step can be skipped on e.g. Lightning AI studio, as conda env is already there)
 ```
-conda env create -f environment.yaml
+conda env create -f env.yml
 ```
 
 Activate the environment:
-(this step can be skipped on e.g. Lightning AI studio, as conda env is already there)
 ```
 conda activate aml_magic
 ```
 
-Install the package along with all dependencies:
+## Running Docker version
+
+Alternatively, you can run the project using Docker. To build the Docker image, execute the following command:
 
 ```
-poetry install --with dev --with jupyter --no-root
+docker compose up
 ```
 
-To use the package, ensure the environment is activated.
+from within the project repository. This will build an image and execute the model tranining and testing procedure.
 
 # Running experiments
 
